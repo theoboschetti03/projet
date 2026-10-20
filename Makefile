@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Werror -std=c99 -fstackprotector
+CFLAGS = -Wall -Werror -std=c99 -fstack-protector
+TARGET = main
 
 SRC = main.c \
 	  forme.c \
