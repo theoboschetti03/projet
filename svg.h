@@ -1,9 +1,9 @@
 #ifndef SVG_H
 #define SVG_H
-#include "forme.h"
+#include "shape.h"
 #include <stdio.h>
 
-void svg_exporter_forme(const Forme *f, FILE *out);
-int  svg_exporter(const Forme *racine, const char *chemin);
+void svg_write_shape(const Shape *shape, FILE *output);
+int svg_export(const Shape *head, const char *path);
 
 #endif

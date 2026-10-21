@@ -3,11 +3,13 @@ CFLAGS = -Wall -Werror -std=c99 -fstack-protector
 TARGET = main
 
 SRC = main.c \
-	  forme.c \
-	  liste.c \
+	  shape.c \
+	  shape_list.c \
 	  svg.c \
-	  cercle.c \
-	
+	  circle.c \
+	  rectangle.c \
+	  ellipse.c \
+	  line.c
 
 OBJ = $(SRC:.c=.o)
 
