@@ -3,6 +3,11 @@
 #include "svg.h"
 #include "shape_list.h"
 
+/**
+ * @brief Returns the display name for a shape type.
+ * @param type Shape type to describe.
+ * @return A constant string naming the type, or "Unknown" for an unrecognized value.
+ */
 static const char *shape_name(ShapeType type) {
     switch (type) {
     case SHAPE_CIRCLE:
@@ -17,6 +22,10 @@ static const char *shape_name(ShapeType type) {
     return "Unknown";
 }
 
+/**
+ * @brief Runs the interactive shape creation, modification, and export menu.
+ * @return 0 on normal exit, or 1 if reading the main menu fails.
+ */
 int main(void) {
     printf("Welcome to the place where you are now the master of SVG shapes.\n");
     Shape *head = NULL;
