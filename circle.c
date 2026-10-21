@@ -3,7 +3,7 @@
 #include <string.h>
 #include "shape.h"
 
-Shape *shape_create_circle(int center_x, int center_y, int radius) {
+Shape *shape_create_circle(int cx, int cy, int r){
 
     Shape *shape = malloc(sizeof(Shape));
     if (shape == NULL) {
@@ -11,6 +11,8 @@ Shape *shape_create_circle(int center_x, int center_y, int radius) {
     }
     
     shape->type = SHAPE_CIRCLE;
+    
+
     char stroke[8];
     printf("Circle stroke color (e.g. #FF0000):\n");
     if (scanf("%7s", stroke) != 1) {
@@ -30,9 +32,9 @@ Shape *shape_create_circle(int center_x, int center_y, int radius) {
     shape->transform.angle = 0;
     shape->transform.flip_x = 0;
     shape->transform.flip_y = 0;
-    shape->data.circle.center.x = center_x;
-    shape->data.circle.center.y = center_y;
-    shape->data.circle.radius = radius;
+    shape->data.circle.center.x = cx;
+    shape->data.circle.center.y = cy;
+    shape->data.circle.radius = r;
     shape->next = NULL;
 
     return shape;

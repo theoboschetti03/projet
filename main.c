@@ -3,6 +3,8 @@
 #include "svg.h"
 #include "shape_list.h"
 
+
+
 /**
  * @brief Returns the display name for a shape type.
  * @param type Shape type to describe.
@@ -24,7 +26,7 @@ static const char *shape_name(ShapeType type) {
 
 /**
  * @brief Runs the interactive shape creation, modification, and export menu.
- * @return 0 on normal exit, or 1 if reading the main menu fails.
+ * @return 0 on normal exit, or 1 if reading input fails.
  */
 int main(void) {
     printf("Welcome to the place where you are now the master of SVG shapes.\n");
@@ -46,66 +48,95 @@ int main(void) {
         switch (choice) {
         case 1: {
             int shape_choice;
-            int center_x;
-            int center_y;
-            int radius;
             printf("Which shape would you like to create?\n");
             printf("\n1: Circle\n");
+            printf("\n2: Ellipse\n");
+            printf("\n3: Rectangle\n");
+            printf("\n4: Line\n");
             if (scanf("%d", &shape_choice) != 1) {
                 fprintf(stderr, "Invalid shape choice.\n");
                 shape_list_free(head);
                 return 1;
             }
-            if (shape_choice != 1) {
-                printf("This shape is not supported yet.\n");
+            if (shape_choice < 1 || shape_choice > 4) {
+                fprintf(stderr, "Invalid shape choice.\n");
                 break;
             }
-            printf("Circle center x:\n");
-            if (scanf("%d", &center_x) != 1) break;
-            printf("Circle center y:\n");
-            if (scanf("%d", &center_y) != 1) break;
-            printf("Circle radius:\n");
-            if (scanf("%d", &radius) != 1) break;
 
-            Shape *shape = shape_create_circle(center_x, center_y, radius);
-            if (shape == NULL) {
-                fprintf(stderr, "Could not create the circle.\n");
+            switch (shape_choice) {
+            case 1: { int cx, cy, r;
+                    printf("Circle center x:\n");
+                    scanf("%d", &cx);
+                    printf("Circle center y:\n");
+                    scanf("%d", &cy);
+                    printf("Circle radius:\n");
+                    scanf("%d", &r);
+                Shape *shape = shape_create_circle(cx, cy, r);
+                shape_list_append(&head, shape);}
+                break;
+            case 2:{ int cx,cy,rx,ry;
+                    printf("Ellipse center x:\n");
+                    scanf("%d", &cx);
+                    printf("Ellipse center y:\n");
+                    scanf("%d", &cy);
+                    printf("Ellipse horizontal radius:\n");
+                    scanf("%d", &rx);
+                    printf("Ellipse vertical radius:\n");
+                    scanf("%d", &ry);
+                    Shape *shape = shape_create_ellipse(cx, cy, rx, ry);
+                    shape_list_append(&head, shape);}
+                break;
+            case 3:{ int x, y, width, height;
+                    printf("Rectangle top-left x:\n");
+                    scanf("%d", &x);
+                    printf("Rectangle top-left y:\n");
+                    scanf("%d", &y);
+                    printf("Rectangle width:\n");
+                    scanf("%d", &width);
+                    printf("Rectangle height:\n");
+                    scanf("%d", &height);
+                Shape *shape = shape_create_rectangle(x, y, width, height);
+                shape_list_append(&head, shape);}
+            
+                break;
+            case 4:{ int ax, ay, bx, by;
+                    printf("Line start x:\n");
+                    scanf("%d", &ax);
+                    printf("Line start y:\n");
+                    scanf("%d", &ay);
+                    printf("Line end x:\n");
+                    scanf("%d", &bx);
+                    printf("Line end y:\n");
+                    scanf("%d", &by);
+                Shape *shape = shape_create_line(ax, ay, bx, by);
+                shape_list_append(&head, shape);}
                 break;
             }
-            shape_list_append(&head, shape);
+            
             break;
         }
         case 2: {
             char path[256];
-            if (head == NULL) {
-                printf("There are no shapes to export.\n");
-                break;
-            }
             printf("SVG file path (e.g. shapes.svg):\n");
-            if (scanf("%255s", path) != 1) {
-                fprintf(stderr, "Invalid file path.\n");
-                break;
-            }
-            if (svg_export(head, path)) {
-                printf("Export successful: %s\n", path);
-            } else {
-                perror("Could not export the SVG file");
-            }
-            break;
-        }
+            scanf("%255s", path);
+            svg_export(head, path);
+            
+        } break;
+        
+        
+
         case 3: {
             if (head == NULL) {
                 printf("There are no shapes to modify.\n");
                 break;
             }
-
+            printf("Enter the number of the shape to modify:\n");
+            int selection;
             int index = 1;
             for (Shape *shape = head; shape != NULL; shape = shape->next) {
                 printf("%d: %s\n", index++, shape_name(shape->type));
             }
-            printf("Enter the number of the shape to modify:\n");
-            int selection;
-            if (scanf("%d", &selection) != 1 || selection < 1) {
+            if (selection < 1) {
                 fprintf(stderr, "Invalid shape selection.\n");
                 break;
             }
@@ -129,7 +160,8 @@ int main(void) {
             printf("6: Flip vertically\n");
             if (scanf("%d", &modification) != 1) {
                 fprintf(stderr, "Invalid modification choice.\n");
-                break;
+                shape_list_free(head);
+                return 1;
             }
 
             int dx;
@@ -139,26 +171,43 @@ int main(void) {
             switch (modification) {
             case 1:
                 printf("Horizontal translation:\n");
-                if (scanf("%d", &dx) != 1) break;
+                if (scanf("%d", &dx) != 1) {
+                    shape_list_free(head);
+                    return 1;
+                }
                 printf("Vertical translation:\n");
-                if (scanf("%d", &dy) != 1) break;
+                if (scanf("%d", &dy) != 1) {
+                    shape_list_free(head);
+                    return 1;
+                }
                 shape_translate(target, dx, dy);
                 break;
             case 2:
                 printf("Rotation angle in degrees:\n");
-                if (scanf("%d", &angle) != 1) break;
+                if (scanf("%d", &angle) != 1) {
+                    shape_list_free(head);
+                    return 1;
+                }
                 shape_rotate(target, angle);
                 break;
             case 3:
                 printf("New stroke color (e.g. #FF0000):\n");
-                if (scanf("%7s", color) != 1) break;
+                if (scanf("%7s", color) != 1) {
+                    fprintf(stderr, "Invalid stroke color.\n");
+                    shape_list_free(head);
+                    return 1;
+                }
                 if (!shape_set_stroke(target, color)) {
                     fprintf(stderr, "Invalid stroke color.\n");
                 }
                 break;
             case 4:
                 printf("New fill color (e.g. #00FF00):\n");
-                if (scanf("%7s", color) != 1) break;
+                if (scanf("%7s", color) != 1) {
+                    fprintf(stderr, "Invalid fill color.\n");
+                    shape_list_free(head);
+                    return 1;
+                }
                 if (!shape_set_fill(target, color)) {
                     fprintf(stderr, "Invalid fill color.\n");
                 }
