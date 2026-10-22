@@ -2,11 +2,7 @@
 #include "shape.h"
 #include "svg.h"
 
-/**
- * @brief Writes the SVG transform attribute for a shape.
- * @param shape Shape whose transform should be serialized.
- * @param output Writable output stream.
- */
+
 static void svg_write_transform(const Shape *shape, FILE *output) {
     int scale_x = shape->transform.flip_x ? -1 : 1;
     int scale_y = shape->transform.flip_y ? -1 : 1;
