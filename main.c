@@ -173,10 +173,10 @@ int main(void) {
                 shape_set_fill(target, color);
                 break;
             case 5:
-                shape_flip_x(target);
+                printf("Not available yet");
                 break;
             case 6:
-                shape_flip_y(target);
+                printf("Not available yet");
                 break;
             default:
                 printf("Invalid modification choice.\n");
