@@ -6,7 +6,9 @@ typedef enum {
     SHAPE_CIRCLE,    
     SHAPE_ELLIPSE,   
     SHAPE_RECTANGLE, 
-    SHAPE_LINE       
+    SHAPE_LINE,
+    SHAPE_POLYLINE,
+    SHAPE_POLYGON  
 } ShapeType;
 
 
@@ -41,20 +43,33 @@ struct Shape {
             Point center; 
             int radius;   
         } circle;
+        
         struct {
             Point start; 
             Point end;   
         } line;
+        
         struct {
             Point center; 
             int radius_x; 
             int radius_y; 
         } ellipse;
+        
         struct {
             Point top_left; 
             int width;      
             int height;     
         } rectangle;
+        
+        struct {
+            Point *points;
+            int count;
+        }polyline;
+        
+        struct {
+            Point *points;
+            int count;
+        }polygon;
     } data; 
 };
 
@@ -68,6 +83,8 @@ Shape *shape_create_rectangle(int x, int y, int width, int height);
 
 
 Shape *shape_create_ellipse(int center_x, int center_y, int radius_x, int radius_y);
+
+
 
 
 void shape_free(Shape *shape);

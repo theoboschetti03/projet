@@ -2,6 +2,8 @@
 #include "shape.h"
 #include "svg.h"
 #include "shape_list.h"
+#include "polyline.h"
+#include "polygon.h"
 
 
 
@@ -16,6 +18,10 @@ static const char *shape_name(ShapeType type) {
         return "Rectangle";
     case SHAPE_LINE:
         return "Line";
+    case SHAPE_POLYLINE:
+        return "Polyline";
+    case SHAPE_POLYGON:
+        return "Polygon";
     }
     return "Unknown";
 }
@@ -119,20 +125,32 @@ int main(void) {
         
 
         case 3: {
+            if (head == NULL) {
+                printf("There are no shapes to modify.\n");
+                break;
+            }
             printf("Enter the number of the shape to modify:\n");
             int selection;
             int index = 1;
             for (Shape *shape = head; shape != NULL; shape = shape->next) {
                 printf("%d: %s\n", index++, shape_name(shape->type));
             }
-            
+            scanf("%d", &selection);
+            if (selection < 1) {
+                fprintf(stderr, "Invalid shape selection.\n");
+                break;
+            }
 
             Shape *target = head;
             for (int i = 1; target != NULL && i < selection; i++) {
                 target = target->next;
             }
-            scanf("%d", &selection);
-            int modification = 0;
+            if (target == NULL) {
+                printf("That shape does not exist.\n");
+                break;
+            }
+
+            int modification;
             printf("What would you like to modify?\n");
             printf("1: Translate\n");
             printf("2: Rotate\n");
@@ -140,43 +158,65 @@ int main(void) {
             printf("4: Fill color\n");
             printf("5: Flip horizontally\n");
             printf("6: Flip vertically\n");
-            scanf("%d", &modification);
+            if (scanf("%d", &modification) != 1) {
+                fprintf(stderr, "Invalid modification choice.\n");
+                shape_list_free(head);
+                return 1;
+            }
 
             int dx;
             int dy;
             int angle;
             char color[8];
             switch (modification) {
-            case 1: 
+            case 1:
                 printf("Horizontal translation:\n");
-                    scanf("%d", &dx);
-                
+                if (scanf("%d", &dx) != 1) {
+                    shape_list_free(head);
+                    return 1;
+                }
                 printf("Vertical translation:\n");
-                    scanf("%d", &dy);
-                
+                if (scanf("%d", &dy) != 1) {
+                    shape_list_free(head);
+                    return 1;
+                }
                 shape_translate(target, dx, dy);
                 break;
             case 2:
                 printf("Rotation angle in degrees:\n");
-                scanf("%d", &angle);
+                if (scanf("%d", &angle) != 1) {
+                    shape_list_free(head);
+                    return 1;
+                }
                 shape_rotate(target, angle);
                 break;
             case 3:
                 printf("New stroke color (e.g. #FF0000):\n");
-                scanf("%7s", color);
-                shape_set_stroke(target, color);
-                
+                if (scanf("%7s", color) != 1) {
+                    fprintf(stderr, "Invalid stroke color.\n");
+                    shape_list_free(head);
+                    return 1;
+                }
+                if (!shape_set_stroke(target, color)) {
+                    fprintf(stderr, "Invalid stroke color.\n");
+                }
                 break;
             case 4:
                 printf("New fill color (e.g. #00FF00):\n");
-                scanf("%7s", color);
-                shape_set_fill(target, color);
+                if (scanf("%7s", color) != 1) {
+                    fprintf(stderr, "Invalid fill color.\n");
+                    shape_list_free(head);
+                    return 1;
+                }
+                if (!shape_set_fill(target, color)) {
+                    fprintf(stderr, "Invalid fill color.\n");
+                }
                 break;
             case 5:
-                printf("Not available yet");
+                shape_flip_x(target);
                 break;
             case 6:
-                printf("Not available yet");
+                shape_flip_y(target);
                 break;
             default:
                 printf("Invalid modification choice.\n");

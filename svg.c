@@ -4,6 +4,14 @@
 
 
 
+void svg_write_transform(const Shape *shape, FILE *output) {
+    int scale_x = shape->transform.flip_x ? -1 : 1;
+    int scale_y = shape->transform.flip_y ? -1 : 1;
+    fprintf(output, " transform=\"translate(%d,%d) rotate(%d) scale(%d,%d)\"",
+            shape->transform.dx, shape->transform.dy, shape->transform.angle,
+            scale_x, scale_y);
+}
+
 
 void svg_write_shape(const Shape *shape, FILE *output) {
     if (shape == NULL || output == NULL) {
@@ -15,7 +23,7 @@ void svg_write_shape(const Shape *shape, FILE *output) {
         fprintf(output, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"%s\" fill=\"%s\"",
                 shape->data.circle.center.x, shape->data.circle.center.y,
                 shape->data.circle.radius, shape->style.stroke, shape->style.fill);
-        
+                svg_write_transform(shape, output);
         fprintf(output, "/>\n");
         break;
 
@@ -24,7 +32,7 @@ void svg_write_shape(const Shape *shape, FILE *output) {
                 shape->data.rectangle.top_left.x, shape->data.rectangle.top_left.y,
                 shape->data.rectangle.width, shape->data.rectangle.height,
                 shape->style.stroke, shape->style.fill);
-        
+                svg_write_transform(shape, output);
         fprintf(output, "/>\n");
         break;
 
@@ -33,7 +41,7 @@ void svg_write_shape(const Shape *shape, FILE *output) {
                 shape->data.ellipse.center.x, shape->data.ellipse.center.y,
                 shape->data.ellipse.radius_x, shape->data.ellipse.radius_y,
                 shape->style.stroke, shape->style.fill);
-        
+                svg_write_transform(shape, output);
         fprintf(output, "/>\n");
         break;
 
@@ -42,9 +50,14 @@ void svg_write_shape(const Shape *shape, FILE *output) {
                 shape->data.line.start.x, shape->data.line.start.y,
                 shape->data.line.end.x, shape->data.line.end.y,
                 shape->style.stroke);
-        
+                svg_write_transform(shape, output);
         fprintf(output, "/>\n");
         break;
+    case SHAPE_POLYLINE:
+    break;
+
+    case SHAPE_POLYGON:
+    break;
     }
 }
 

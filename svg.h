@@ -3,6 +3,7 @@
 #include "shape.h"
 #include <stdio.h>
 
+void svg_write_transform(const Shape *shape, FILE *output);
 
 void svg_write_shape(const Shape *shape, FILE *output);
 
