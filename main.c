@@ -30,10 +30,10 @@ int main(void) {
 
     while (choice != 4) {
         printf("\nWhat would you like to do?\n");
-        printf("1: Create\n");
-        printf("2: Export\n");
-        printf("3: Modify\n");
-        printf("4: Quit\n");
+        printf("\n1: Create\n");
+        printf("\n2: Export\n");
+        printf("\n3: Modify\n");
+        printf("\n4: Quit\n");
         if (scanf("%d", &choice) != 1) {
             fprintf(stderr, "Invalid choice.\n");
             shape_list_free(head);
@@ -191,11 +191,11 @@ int main(void) {
             int modification;
             printf("What would you like to modify?\n");
             printf("1: Translate\n");
-            printf("2: Rotate\n");
-            printf("3: Stroke color\n");
-            printf("4: Fill color\n");
-            printf("5: Flip horizontally\n");
-            printf("6: Flip vertically\n");
+            printf("\n2: Rotate\n");
+            printf("\n3: Stroke color\n");
+            printf("\n4: Fill color\n");
+            printf("\n5: Flip horizontally\n");
+            printf("\n6: Flip vertically\n");
             if (scanf("%d", &modification) != 1) {
                 fprintf(stderr, "Invalid modification choice.\n");
                 shape_list_free(head);
