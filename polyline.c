@@ -3,7 +3,7 @@
 #include "shape.h"
 #include "polyline.h"
 
-Shape *shape_create_polyline(void){
+Shape *shape_create_polyline(int nb_points){
     Shape *shape = malloc(sizeof(Shape));
     if (shape == NULL){
         return NULL;
@@ -11,13 +11,13 @@ Shape *shape_create_polyline(void){
     shape->type = SHAPE_POLYLINE;
 
     char stroke[8];
-    printf("Circle stroke color (e.g. #FF0000):\n");
+    printf("Polyline stroke color (e.g. #FF0000):\n");
     if (scanf("%7s", stroke) != 1) {
         free(shape);
         return NULL;
     }
     char fill[8];
-    printf("Circle fill color (e.g. #00FF00):\n");
+    printf("Polyline fill color (e.g. #00FF00):\n");
     if (scanf("%7s", fill) != 1) {
         free(shape);
         return NULL;
@@ -30,4 +30,10 @@ Shape *shape_create_polyline(void){
     shape->transform.angle = 0;
     shape->transform.flip_x = 0;
     shape->transform.flip_y = 0;
+    
+    
+    shape->data.polyline.count = nb_points;
+    shape->data.polyline.points = malloc(nb_points *sizeof(Point));
+
+    return shape;
 }

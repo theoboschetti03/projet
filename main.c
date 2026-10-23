@@ -52,6 +52,7 @@ int main(void) {
             printf("\n2: Ellipse\n");
             printf("\n3: Rectangle\n");
             printf("\n4: Line\n");
+            printf("\n5: Polyline\n");
             if (scanf("%d", &shape_choice) != 1) {
                 fprintf(stderr, "Invalid shape choice.\n");
                 shape_list_free(head);
@@ -71,7 +72,8 @@ int main(void) {
                     printf("Circle radius:\n");
                     scanf("%d", &r);
                 Shape *shape = shape_create_circle(cx, cy, r);
-                shape_list_append(&head, shape);}
+                shape_list_append(&head, shape);
+                }
                 break;
             case 2:{ int cx,cy,rx,ry;
                     printf("Ellipse center x:\n");
@@ -83,7 +85,8 @@ int main(void) {
                     printf("Ellipse vertical radius:\n");
                     scanf("%d", &ry);
                     Shape *shape = shape_create_ellipse(cx, cy, rx, ry);
-                    shape_list_append(&head, shape);}
+                    shape_list_append(&head, shape);
+                    }
                 break;
             case 3:{ int x, y, width, height;
                     printf("Rectangle top-left x:\n");
@@ -95,7 +98,8 @@ int main(void) {
                     printf("Rectangle height:\n");
                     scanf("%d", &height);
                 Shape *shape = shape_create_rectangle(x, y, width, height);
-                shape_list_append(&head, shape);}
+                shape_list_append(&head, shape);
+                }
             
                 break;
             case 4:{ int ax, ay, bx, by;
@@ -108,7 +112,16 @@ int main(void) {
                     printf("Line end y:\n");
                     scanf("%d", &by);
                 Shape *shape = shape_create_line(ax, ay, bx, by);
-                shape_list_append(&head, shape);}
+                shape_list_append(&head, shape);
+                }
+                break;
+
+            case 5:{ int nb_points;
+                    printf("Choose the number of points :\n");
+                    scanf("%d", &nb_points);
+                Shape *shape = shape_create_polyline(nb_points);
+                shape_list_append(&head, shape);
+                }
                 break;
             }
             

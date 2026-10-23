@@ -4,6 +4,6 @@
 #ifndef POLYLINE_H
 #define POLYLINE_H
 
-Shape *shape_create_polyline(void);
+Shape *shape_create_polyline(int nb_points);
 
 #endif
