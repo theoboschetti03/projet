@@ -6,11 +6,8 @@ Ce projet permet de créer, exporter ou modifier plusieurs types de formes que l
 
 ## Sommaire
 - [Fonctionnalités](#-fonctionnalités)
-- [Architecture du projet](#-architecture-du-projet)
-- [Préréquis et Compilation](#-préréquis-et-compilation)
-- [Guide d'utilisation](#-guide-dutilisation)
-- [Choix de conception & Structures](#-choix-de-conception--structures)
-- [Gestion de la mémoire](#-gestion-de-la-mémoire)
+- [Organisation fichiers](#-Organisation-fihiers)
+  
 
 ---
 
