@@ -67,7 +67,18 @@ void svg_write_shape(const Shape *shape, FILE *output) {
             break;
 }
 
-    case SHAPE_POLYGON:
+    case SHAPE_POLYGON:{
+    fprintf(output, "<polygon fill=\"%s\" stroke=\"%s\" points=\"", shape->style.fill, shape->style.stroke);
+            for (int j = 0; j < shape->data.polygon.count; j++) {
+            fprintf(output, "%d,%d", shape->data.polygon.points[j].x, shape->data.polygon.points[j].y);
+            if (j < shape->data.polygon.count - 1) {
+                fprintf(output, " "); 
+        }
+    }
+            fprintf(output, "\"");
+            svg_write_transform(shape, output);
+            fprintf(output, "/>\n");
+     }     break;
     break;
     }
 }

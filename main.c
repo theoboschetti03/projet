@@ -44,18 +44,19 @@ int main(void) {
         case 1: {
             int shape_choice;
             printf("Which shape would you like to create?\n");
-            printf("1: Circle\n");
-            printf("2: Ellipse\n");
-            printf("3: Rectangle\n");
-            printf("4: Line\n");
-            printf("5: Polyline\n");
+            printf("\n1: Circle\n");
+            printf("\n2: Ellipse\n");
+            printf("\n3: Rectangle\n");
+            printf("\n4: Line\n");
+            printf("\n5: Polyline\n");
+            printf("\n6 : Polygon\n");
             if (scanf("%d", &shape_choice) != 1) {
                 fprintf(stderr, "Invalid shape choice.\n");
                 shape_list_free(head);
                 return 1;
             }
-            // Ajusté à 5 puisque vous avez 5 types de formes proposés
-            if (shape_choice < 1 || shape_choice > 5) {
+            
+            if (shape_choice < 1 || shape_choice > 6) {
                 fprintf(stderr, "Invalid shape choice.\n");
                 break;
             }
@@ -120,6 +121,23 @@ int main(void) {
                 printf("Choose the number of points :\n");
                 scanf("%d", &nb_points);
                 Shape *shape = shape_create_polyline(nb_points);
+                if (shape != NULL) {
+                    for (i = 0; i < nb_points; i++) {
+                        printf("Enter the coordinates of the %d point :\n", i + 1);
+                        printf("X-coordinates :\n");
+                        scanf("%d", &shape->data.polyline.points[i].x);
+                        printf("Y-coordinates :\n");
+                        scanf("%d", &shape->data.polyline.points[i].y);
+                    }
+                    shape_list_append(&head, shape);
+                }
+                break;
+            }
+            case 6: { 
+                int nb_points, i;
+                printf("Choose the number of points :\n");
+                scanf("%d", &nb_points);
+                Shape *shape = shape_create_polygon(nb_points);
                 if (shape != NULL) {
                     for (i = 0; i < nb_points; i++) {
                         printf("Enter the coordinates of the %d point :\n", i + 1);

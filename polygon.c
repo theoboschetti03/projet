@@ -4,7 +4,7 @@
 #include "shape.h"
 #include "polygon.h"
 
-Shape *shape_create_polygon(void){
+Shape *shape_create_polygon(int nb_points){
     Shape *shape = malloc(sizeof(Shape));
     if (shape == NULL){
         return NULL;
@@ -33,6 +33,14 @@ Shape *shape_create_polygon(void){
     shape->transform.angle = 0;
     shape->transform.flip_x = 0;
     shape->transform.flip_y = 0;
+    shape->data.polygon.count = nb_points;
+    shape->data.polygon.points = malloc(nb_points * sizeof(Point));
+    if (shape->data.polygon.points == NULL) {
+        free(shape);
+        return NULL;
+    }
+    return shape;
+
 }
 
 

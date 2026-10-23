@@ -10,7 +10,8 @@ SRC = main.c \
 	  rectangle.c \
 	  ellipse.c \
 	  line.c \
-	  polyline.c
+	  polyline.c \
+	  polygon.c
 
 OBJ = $(SRC:.c=.o)
 

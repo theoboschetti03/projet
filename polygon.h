@@ -4,7 +4,7 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-Shape *shape_create_polygon(void);
+Shape *shape_create_polygon(int nb_points);
 
 
 
